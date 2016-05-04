@@ -36,8 +36,10 @@ def clean_python(cli, pretend=False):
 		print("Would have removed {0} bytecode files.".format(count))
 
 
-def clean(cli, pretend=False, plugins=None: partial(str.split, sep=',')):
+def clean(cli, pretend=False, plugins=None):
 	"""Search for and remove compiled Python bytecode."""
+	
+	plugins = plugins.split(',') if plugins else None
 	
 	for cleaner in PluginManager('web.clean', plugins):
 		cleaner(cli, pretend=pretend)

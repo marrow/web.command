@@ -18,10 +18,10 @@ from setuptools.command.test import test as TestCommand
 
 if sys.version_info < (2, 7):
 	raise SystemExit("Python 2.7 or later is required.")
-elif sys.version_info > (3, 0) and sys.version_info < (3, 3):
-	raise SystemExit("Python 3.3 or later is required.")
+elif sys.version_info > (3, 0) and sys.version_info < (3, 2):
+	raise SystemExit("Python 3.2 or later is required.")
 
-exec(open(os.path.join("web", "release.py")).read())
+exec(open(os.path.join("web", "command", "release.py")).read())
 
 
 class PyTest(TestCommand):
@@ -38,33 +38,35 @@ class PyTest(TestCommand):
 
 here = os.path.abspath(os.path.dirname(__file__))
 
-tests_require = contentment_require + [
+tests_require = [
 		'pytest',  # test collector and extensible runner
 		'pytest-cov',  # coverage reporting
 		'pytest-flakes',  # syntax validation
-		'pytest-cagoule',  # intelligent test execution
-		'pytest-spec<=0.2.22',  # output formatting
+		'pytest-spec',  # output formatting
 	]
 
 
 setup(
-	name = "WebCore.command",
+	name = "web.command",
 	version = version,
 	
 	description = description,
 	long_description = codecs.open(os.path.join(here, 'README.rst'), 'r', 'utf8').read(),
 	url = url,
-	download_url = 'https://warehouse.python.org/project/WebCore.command/',
+	download_url = 'https://github.com/marrow/web.command/releases',
 	
 	author = author.name,
 	author_email = author.email,
 	
 	license = 'MIT',
-	keywords = '',
+	keywords = [
+			'WebCore',  # This package is meant to interoperate with the WebCore framework.
+			'cli',
+			'command',
+		],
 	classifiers = [
 			"Development Status :: 5 - Production/Stable",
 			"Environment :: Console",
-			"Environment :: Web Environment",
 			"Intended Audience :: Developers",
 			"License :: OSI Approved :: MIT License",
 			"Operating System :: OS Independent",
@@ -76,7 +78,6 @@ setup(
 			"Programming Language :: Python :: 3.4",
 			"Programming Language :: Python :: Implementation :: CPython",
 			"Programming Language :: Python :: Implementation :: PyPy",
-			"Topic :: Internet :: WWW/HTTP :: WSGI",
 			"Topic :: Software Development :: Libraries :: Python Modules",
 		],
 	
@@ -85,12 +86,11 @@ setup(
 	namespace_packages = [
 			'web',  # primary namespace
 			'web.command',  # extensible command-line interface and scripts
-			'web.server',  # front-end WSGI bridges
 		],
 	
 	entry_points = {
 			# Python Standard
-			'console_scripts': ['web = web.command.main:main'],  # extensible command line interface
+			'console_scripts': ['web = web.__main__:main'],  # extensible command line interface
 			'gui_scripts': [],  # for future use, i.e. "native" applications
 			
 			# Command-line scripts for administrative purposes.
@@ -134,18 +134,10 @@ setup(
 		],
 	
 	extras_require = dict(
-			development = tests_require + ['waitress'],
-			contentment = contentment_require,
-			
-			waitress = ['waitress'],
-			tornado = ['tornado'],
-			fcgi = ['fcgi'],
+			development = tests_require,
 		),
 	
 	tests_require = tests_require,
-	
-	dependency_links = [
-		],
 	
 	zip_safe = True,
 	cmdclass = dict(

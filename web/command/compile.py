@@ -36,8 +36,10 @@ def compile_python(cli, pretend=False):
 		print("Would have compiled {0} source files.".format(count), file=sys.stderr)
 
 
-def clean(cli, pretend=False, plugins=None: partial(str.split, sep=',')):
-	"""Search for and remove compiled Python bytecode."""
+def compile(cli, pretend=False, plugins=None):
+	"""Execute compilation plugins."""
 	
+	plugins = plugins.split(',') if plugins else None
 	for compiler in PluginManager('web.compile', plugins):
 		compiler(cli, pretend=pretend)
+

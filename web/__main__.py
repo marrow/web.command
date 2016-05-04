@@ -3,7 +3,6 @@
 
 from __future__ import print_function
 
-import os
 import sys
 import select
 import codecs
@@ -11,9 +10,8 @@ import pkg_resources
 
 from marrow.script import describe
 from marrow.script.core import ExitException
-from marrow.config import Configuration
 
-from web import release
+from web.command import release
 
 
 __all__ = ['ScriptCore']
@@ -50,10 +48,12 @@ class ScriptCore(object):
         if not self._config_cache:
             if not sys.stdin.isatty() and select.select([sys.stdin],[],[],0.0)[0]:
                 # We have configuration coming in over STDIN.
-                self._config_cache = Configuration.load(sys.stdin)
+                pass
+				#self._config_cache = Configuration.load(sys.stdin)
             else:
                 try:
-                    self._config_cache = Configuration.load(codecs.open(self._config, 'r', 'utf8'))
+                    pass
+					#self._config_cache = Configuration.load(codecs.open(self._config, 'r', 'utf8'))
                 except FileNotFoundError:
                     raise ExitException(
                         "Configuration file not found: " + self._config +
