@@ -41,7 +41,7 @@ def explore(namespace, short):
 				print(" ", C['item'], "* ", C['n'], line, sep='')
 			def md(label, line):
 				labl = 12 - len(label)
-				print("   ", C['label'], label, ":", labl * " ", C['n'], "\n   ".join(wrap(line, Parser.width() - (3+len(label)+2)).split("\n")), sep='')
+				print("   ", C['label'], label, ":", labl * " ", C['n'], ("\n" + 16*" ").join(wrap(line, Parser.width() - (12+len(label))).split("\n")), sep='')
 			if 'Summary' in metadata: md('Description', metadata['Summary'])
 			md("Location", i.dist.location)
 			if 'Author' in metadata: md('Author', metadata['Author'] + ((' <' + metadata['Author-email'] + '>') if metadata.get('Author-email') else ''))
